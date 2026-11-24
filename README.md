@@ -33,7 +33,7 @@ Accurate income classification supports socioeconomic policy analysis, financial
 ---
 
 ## 3. GitHub Repository Link
-* **Repository URL:** `https://github.com/<your-username>/<your-repo-name>`[cite: 1]
+* **Repository URL:** https://github.com/2026ct05091-ship-it/ML-Assignment-2
 
 ### Repository Structure
 ```text
