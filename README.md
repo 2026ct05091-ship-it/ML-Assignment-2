@@ -1,4 +1,43 @@
-Adult Census Income Classification — Machine Learning Assignment1. Problem StatementThe objective of this project is to build, evaluate, and compare five supervised machine learning classification models to predict whether an individual's annual income exceeds $50,000 (>50K vs. <=50K) based on demographic, educational, and employment attributes from census data. Accurately identifying income brackets is a classic tabular binary classification problem useful for socioeconomic research, targeted financial product recommendations, and credit risk pre-screening.2. Dataset DescriptionDataset Name & Source: Adult Census Income Dataset (sourced from the UCI Machine Learning Repository / Kaggle).Why This Dataset Was Selected: It provides a realistic mix of continuous numerical variables and multi-category nominal features, contains authentic missing values and duplicate entries that require systematic cleaning, and exhibits a natural class imbalance—making it ideal for evaluating classification metrics beyond simple accuracy (such as AUC, F1, and MCC).Dataset Dimensions:Raw Instances: 32,561 rows (32,537 rows after removing 24 exact duplicates)Features: 14 predictive features + 1 binary target variable (income)Target Variable: income — Binary classification (<=50K encoded as 0, >50K encoded as 1).Feature Types:Numerical Features (6): age, fnlwgt (final sampling weight), education.num, capital.gain, capital.loss, hours.per.weekCategorical Features (8): workclass, education, marital.status, occupation, relationship, race, sex, native.countryMissing Values & Data Cleaning:Missing values were encoded as '?' across three categorical columns: workclass (1,836 missing), occupation (1,843 missing), and native.country (583 missing).'?' entries were converted to NaN, and 24 exact duplicate rows were removed prior to splitting.Class Imbalance Examination:Class 0 (<=50K): 75.91% (24,698 instances)Class 1 (>50K): 24.09% (7,839 instances)Observation: The dataset has an approximate 3:1 class imbalance. Because a naive classifier predicting <=50K for everyone would achieve 75.91% accuracy, metrics like ROC-AUC, F1 Score, and Matthews Correlation Coefficient (MCC) are essential for fair model evaluation.3. Data Preprocessing & Experimental SetupTo prevent data leakage, all transformations were fitted strictly on the training set (80%) and then applied to the test set (20%):Train-Test Split: 80:20 stratified split (train_size=26,029, test_size=6,508) using random_state=42 to preserve the 75.91% / 24.09% class distribution.Imputation: Median imputation (SimpleImputer(strategy='median')) for numerical features; mode imputation (SimpleImputer(strategy='most_frequent')) for categorical features.Feature Scaling: StandardScaler applied to all 6 numerical features (critical for distance-based kNN and gradient-based Logistic Regression).Categorical Encoding: OneHotEncoder(handle_unknown='ignore') applied to all 8 categorical features, expanding the feature space to 104 columns.4. GitHub Repository LinkRepository URL: https://github.com/<your-username>/<your-repo-name> (Replace with your actual public GitHub repository link before submitting)Repository Structure:project-folder/
+# Machine Learning Assignment-2
+## Name: Someasvar R
+## BITS-ID: 2026CT05091
+# Income Prediction Using Machine Learning Classification Models
+
+## 1. Problem Statement
+The objective of this project is to build, evaluate, and compare multiple supervised machine learning classification models to predict whether an individual's annual income exceeds **$50,000** (`>50K`) or is less than or equal to **$50,000** (`<=50K`) based on demographic, educational, and employment attributes. 
+
+Accurate income classification supports socioeconomic policy analysis, financial risk assessment, and targeted resource allocation. Because real-world census data contains missing entries, mixed data types, and class imbalance, this pipeline implements leak-free data preprocessing and evaluates models across six complementary performance metrics—including AUC and Matthews Correlation Coefficient (MCC)—to ensure robust evaluation beyond simple accuracy.
+
+---
+
+## 2. Dataset Description
+* **Dataset Name:** Adult Census Income Dataset
+* **Source:** UCI Machine Learning Repository / Kaggle (`adult.csv`)
+* **Dataset Justification:** Selected because it exceeds all minimum complexity requirements (32,561 raw instances and 14 predictive features), represents a realistic tabular classification problem with mixed numerical and categorical attributes, contains missing values requiring principled imputation, and exhibits natural class imbalance.
+* **Instances & Features:**
+  * **Raw Instances:** 32,561 rows (32,537 rows remaining after removing 24 exact duplicates)
+  * **Predictive Features:** 14 features (exceeding the minimum requirement of 12)
+  * **Target Variable:** `income` (Binary classification: `<=50K` mapped to `0`, `>50K` mapped to `1`)
+
+### Feature Types
+* **Numerical Features (6):** `age`, `fnlwgt` (final sampling weight), `education.num`, `capital.gain`, `capital.loss`, `hours.per.week`
+* **Categorical Features (8):** `workclass`, `education`, `marital.status`, `occupation`, `relationship`, `race`, `sex`, `native.country`
+
+### Missing Values & Class Imbalance Analysis
+* **Missing Values:** Missing entries were encoded as `'?'` across three categorical columns: `workclass` (1,836 missing), `occupation` (1,843 missing), and `native.country` (583 missing). These were converted to `NaN` and imputed using the training-set mode.
+* **Class Distribution:** The dataset shows a moderate ~3:1 class imbalance:
+  * **Class `0` (`<=50K`):** 75.91% (24,698 instances)
+  * **Class `1` (`>50K`):** 24.09% (7,839 instances)
+  * Because of this imbalance, **MCC**, **F1 Score**, and **AUC** are emphasized alongside Accuracy.
+
+---
+
+## 3. GitHub Repository Link
+* **Repository URL:** `https://github.com/<your-username>/<your-repo-name>`[cite: 1]
+
+### Repository Structure
+```text
+project-folder/
 ├── requirements.txt
 ├── README.md
 ├── test_data.csv
@@ -7,14 +46,9 @@ Adult Census Income Classification — Machine Learning Assignment1. Problem Sta
 └── model/
     ├── train_and_evaluate.py
     ├── preprocessor.joblib
-    ├── evaluation_metrics.csv
     ├── logistic_regression.joblib
     ├── decision_tree.joblib
     ├── knn.joblib
     ├── naive_bayes.joblib
-    └── random_forest_ensemble.joblib
-5. Execution InstructionsClone the repository and navigate to the project directory:git clone https://github.com/<your-username>/<your-repo-name>.git
-cd <your-repo-name>
-Install the required dependencies:pip install -r requirements.txt
-Run the training and evaluation script (ensure adult.csv is in the root directory):python model/train_and_evaluate.py
-6. Models Used & Evaluation MetricsModel ConfigurationsLogistic Regression: max_iter=1000, random_state=42Decision Tree Classifier: max_depth=10, random_state=42K-Nearest Neighbor (kNN): n_neighbors=11, Euclidean distance (metric='minkowski', p=2)Naive Bayes Classifier: GaussianNB()Random Forest (Ensemble): n_estimators=150, max_depth=16, random_state=42Evaluation Metrics Comparison TableML Model NameAccuracyAUCPrecisionRecallF1MCCLogistic Regression0.85020.90040.73440.59250.65580.5668Decision Tree0.84990.88910.71710.62240.66640.5726kNN0.83940.87380.69210.60080.64320.5425Naive Bayes0.52440.72180.33050.94960.49040.3142Random Forest (Ensemble)0.85680.90940.77890.56630.65580.5798Graph Representation of Evaluation MetricsGrouped Bar Chart ComparisonMetrics Heatmap7. Observations on Model PerformanceML Model NameObservation about model performanceLogistic RegressionServed as a strong, well-calibrated linear baseline, achieving the second-highest AUC (0.9004) and Accuracy (0.8502). Feature scaling (StandardScaler) and one-hot encoding allowed it to cleanly separate linear combinations of education, capital gains, and hours worked, though its recall (0.5925) indicates some non-linear patterns among high-income earners were missed.Decision TreeDelivered strong performance (Accuracy: 0.8499, F1: 0.6664—highest F1 among all models) by capturing non-linear interactions and threshold rules (e.g., marital.status + capital.gain + education.num). Limiting max_depth=10 effectively prevented severe overfitting while maintaining better recall (0.6224) than Logistic Regression and Random Forest.kNNAchieved solid overall performance (Accuracy: 0.8394, AUC: 0.8738), benefiting from StandardScaler normalization. However, in the high-dimensional 104-feature space created by one-hot encoding, distance metrics suffer slightly from the curse of dimensionality, resulting in lower precision (0.6921) and MCC (0.5425) compared to tree-based and linear models.Naive BayesExhibited extreme trade-off behavior (Accuracy: 0.5244, Recall: 0.9496, Precision: 0.3305). Because GaussianNB assumes feature independence and normal distributions—which are violated by heavily skewed features (capital.gain) and correlated one-hot encoded categorical variables—it aggressively over-predicted the positive (>50K) class, catching almost 95% of high earners at the cost of a very high false-positive rate.Random Forest (Ensemble)Outperformed all individual models across the majority of metrics, achieving the highest Accuracy (0.8568), highest AUC (0.9094), highest Precision (0.7789), and highest MCC (0.5798). By aggregating 150 decorrelated trees, it reduced variance and minimized false positives far better than a single Decision Tree.Overall Winner for your dataset?Random Forest (Ensemble) is the clear overall winner. On an imbalanced dataset (~76:24 split), MCC (0.5798) and ROC-AUC (0.9094) are the most reliable indicators of balanced predictive power, and Random Forest achieved the top score in both alongside the highest Accuracy and Precision.
+    ├── random_forest_ensemble.joblib
+    └── evaluation_metrics.csv
